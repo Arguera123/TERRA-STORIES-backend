@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - master # En caso de que tu rama principal se llame master
+      - develop # Despliegue automático al actualizar la rama develop
 
 permissions:
   contents: write
