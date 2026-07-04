@@ -1,0 +1,34 @@
+site_name: Terra Stories API
+site_description: Documentación oficial de la API de Monitoreo Ambiental Ciudadano
+site_author: Equipo Terra Stories
+
+theme:
+  name: material
+  language: es
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Cambiar a modo oscuro
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Cambiar a modo claro
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
+nav:
+  - Introducción: index.md
+  - Autenticación: auth.md
+  - Endpoints: api.md
