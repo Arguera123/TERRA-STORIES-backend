@@ -18,14 +18,12 @@ public class ZonaController {
 
     private final IZonaService zonaService;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}/geojson")
     public ResponseEntity<Map<String, Object>> obtenerZonaGeoJson(@PathVariable UUID id) {
         Map<String, Object> geoJsonFeature = zonaService.obtenerZonaComoGeoJson(id);
         return ResponseEntity.ok(geoJsonFeature);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<ZonaMinimaDTO>> listarZonas() {
         return ResponseEntity.ok(zonaService.listarZonasMinimas());

@@ -33,7 +33,6 @@ public class ReporteController {
     }
 
     @GetMapping(value = "/zona/{zonaId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<GenericResponse> obtenerReportesPorZona(@PathVariable UUID zonaId) {
         List<ReporteResponseDTO> reportes = reporteService.obtenerReportesPorZona(zonaId);
         return GenericResponse.builder()
@@ -44,7 +43,6 @@ public class ReporteController {
     }
 
     @PatchMapping("/{reporteId}/estado")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<GenericResponse> actualizarEstado(
             @PathVariable UUID reporteId,
             @RequestParam EstadoReporte estado) {
