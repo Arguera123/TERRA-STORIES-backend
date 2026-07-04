@@ -21,7 +21,7 @@ public class UsuarioController {
 
     private final IUsuarioService usuarioService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<GenericResponse> crearUsuario(@RequestBody @Valid CreateUserDTO userDTO) throws Exception {
         String userId = usuarioService.crearUsuario(userDTO);
@@ -47,7 +47,7 @@ public class UsuarioController {
     @PatchMapping("/{userId}/estado")
     public ResponseEntity<GenericResponse> cambiarEstadoUsuario(
             @PathVariable String userId,
-            @RequestParam boolean enabled) {
+            @RequestParam(value = "estado") boolean enabled) {
         usuarioService.cambiarEstadoUsuario(userId, enabled);
         String mensaje = enabled ? "Usuario activado exitosamente" : "Usuario desactivado exitosamente";
         return GenericResponse.builder()
