@@ -12,4 +12,5 @@ public class UserInfoDTO {
     private String nombre;
     private String email;
     private Set<String> roles;
+    private Boolean enabled;
 }

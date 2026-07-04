@@ -47,6 +47,7 @@ public class GeneralMappers {
                 .username((String) keycloakUser.get("username"))
                 .nombre(nombreCompleto)
                 .email((String) keycloakUser.get("email"))
+                .enabled((Boolean) keycloakUser.get("enabled"))
                 .roles(new java.util.HashSet<>())
                 .build();
     }

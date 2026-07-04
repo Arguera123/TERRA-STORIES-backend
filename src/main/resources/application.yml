@@ -33,7 +33,7 @@ keycloak:
   server-url: http://localhost:8080
   realm: terra-stories
   client-id: terra-stories-backend
-  client-secret: I444g2Z9XB99W2LXZrdyiKAmARMGQi0T
+  client-secret: mPWGY2CACyobb0qNF1t3qeFW9Sh63pt3
 
 server:
   port: 6767
