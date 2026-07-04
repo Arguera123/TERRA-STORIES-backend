@@ -2,11 +2,8 @@ package com.amgems.terrastoriesbackend.config;
 
 import feign.Response;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Map;
 
@@ -25,4 +22,11 @@ public interface IKeycloakAdminClient {
 
     @PutMapping(value = "/admin/realms/${keycloak.realm}/users/{userId}", consumes = "application/json")
     Response updateUser(@PathVariable("userId") String userId, @RequestBody Map<String, Object> user);
+
+    @GetMapping("/admin/realms/${keycloak.realm}/users/{userId}/role-mappings/clients/{clientUniqueId}")
+    List<Map<String, Object>> getClientRolesByUserId(
+            @RequestHeader("Authorization") String bearerToken,
+            @PathVariable("userId") String userId,
+            @PathVariable("clientUniqueId") String clientUniqueId
+    );
 }

@@ -1,6 +1,7 @@
 package com.amgems.terrastoriesbackend.controller;
 
 import com.amgems.terrastoriesbackend.domain.DTO.CreateUserDTO;
+import com.amgems.terrastoriesbackend.domain.DTO.UserInfoDTO;
 import com.amgems.terrastoriesbackend.service.IUsuarioService;
 import com.amgems.terrastoriesbackend.utils.GenericResponse;
 import jakarta.validation.Valid;
@@ -16,7 +17,6 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/usuarios")
-@PreAuthorize("hasRole('role-admin')")
 public class UsuarioController {
 
     private final IUsuarioService usuarioService;
@@ -35,7 +35,7 @@ public class UsuarioController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<GenericResponse> listarUsuarios() {
-        List<Map<String, Object>> usuarios = usuarioService.listarUsuarios();
+        List<UserInfoDTO> usuarios = usuarioService.listarUsuarios();
         return GenericResponse.builder()
                 .status(HttpStatus.OK)
                 .message("Listado de usuarios obtenido exitosamente")
