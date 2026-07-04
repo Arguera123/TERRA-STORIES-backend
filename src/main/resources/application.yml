@@ -4,7 +4,7 @@ spring:
     version: 1.0
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/terra_stories_db
+    url: jdbc:postgresql://localhost:5433/terra_stories_db
     username: terra_stories_user
     password: terrastoriespass
 
@@ -19,15 +19,21 @@ spring:
     init:
       mode: always
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${keycloak.server-url}/realms/${keycloak.realm}
+
 app:
   jwt-secret: 5e6e0cf10a57c6b4e5b5a0e5ecb415bca702d9173e0fe90f2d9d6096b813d054
   jwt-expiration-time: 3600000
 
 keycloak:
-  server-url: http://localhost:3030
+  server-url: http://localhost:8080
   realm: terra-stories
   client-id: terra-stories-backend
-  client-secret: vNb0yQpY3MbfmTbYbmopFgX5hyUYjZhL
+  client-secret: I444g2Z9XB99W2LXZrdyiKAmARMGQi0T
 
 server:
-  port: 8080
+  port: 6767
