@@ -62,6 +62,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
+    @ExceptionHandler(feign.FeignException.class)
+    public ResponseEntity<ApiError> handleFeignException(feign.FeignException ex, HttpServletRequest request) {
+        log.error("Error en comunicación externa via Feign en [{}]: {}", request.getRequestURI(), ex.getMessage());
+        int status = ex.status() >= 400 ? ex.status() : HttpStatus.INTERNAL_SERVER_ERROR.value();
+        ApiError error = ApiError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(status)
+                .error("Error de servicio externo")
+                .message("Error de comunicación con el servidor de identidad. Detalle: " + ex.getMessage())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(status).body(error);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGenericException(Exception ex, HttpServletRequest request) {
         log.error("Error no controlado procesando la solicitud [{}]", request.getRequestURI(), ex);

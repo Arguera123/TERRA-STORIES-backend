@@ -55,6 +55,9 @@ public class ReporteBasurero {
     @Column(name = "usuario_id", length = 36)
     private String usuarioId;
 
+    @Column(name = "usuario_asignado_id", length = 36)
+    private String usuarioAsignadoId;
+
     /**
      * Ubicación puntual del basurero reportado (SRID 4326 - WGS84).
      */

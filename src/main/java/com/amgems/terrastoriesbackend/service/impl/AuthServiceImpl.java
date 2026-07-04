@@ -1,10 +1,11 @@
-package com.amgems.terrastoriesbackend.service;
+package com.amgems.terrastoriesbackend.service.impl;
 
 import com.amgems.terrastoriesbackend.config.IKeycloakAdminClient;
 import com.amgems.terrastoriesbackend.config.IKeycloakAuthClient;
 import com.amgems.terrastoriesbackend.config.KeycloakProperties;
 import com.amgems.terrastoriesbackend.domain.DTO.CreateUserDTO;
 import com.amgems.terrastoriesbackend.domain.DTO.KeycloakTokenResponse;
+import com.amgems.terrastoriesbackend.service.IAuthService;
 import com.amgems.terrastoriesbackend.utils.GeneralMappers;
 import feign.Response;
 import lombok.RequiredArgsConstructor;
@@ -27,22 +28,6 @@ public class AuthServiceImpl implements IAuthService {
     private final IKeycloakAuthClient keycloakAuthClient;
 
     private final KeycloakProperties keycloakProperties;
-
-    @Override
-    public KeycloakTokenResponse register(CreateUserDTO user) throws Exception {
-        Map<String, Object> userPayload = GeneralMappers.createUserDtoToMap(user);
-
-        try (Response response = keycloakAdminClient.createUser(userPayload)) {
-            if (response.status() != HttpStatus.CREATED.value()) {
-                throw new IllegalStateException(
-                        "Keycloak no pudo crear el usuario. Código de respuesta: " + response.status());
-            }
-        }
-
-        // Tras crear el usuario, se autentica de inmediato con las mismas credenciales
-        // para devolver al cliente un token de acceso utilizable sin un segundo request.
-        return login(user.getUserName(), user.getPassword());
-    }
 
     @Override
     public KeycloakTokenResponse login(String username, String password) {

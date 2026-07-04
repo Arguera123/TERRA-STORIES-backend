@@ -1,4 +1,4 @@
-package com.amgems.terrastoriesbackend.service;
+package com.amgems.terrastoriesbackend.service.impl;
 
 import com.amgems.terrastoriesbackend.domain.DTO.CreateReporteRequestDTO;
 import com.amgems.terrastoriesbackend.domain.DTO.ReporteResponseDTO;
@@ -7,6 +7,7 @@ import com.amgems.terrastoriesbackend.domain.ReporteBasurero;
 import com.amgems.terrastoriesbackend.exception.ResourceNotFoundException;
 import com.amgems.terrastoriesbackend.repository.ReporteBasureroRepository;
 import com.amgems.terrastoriesbackend.repository.ZonaRepository;
+import com.amgems.terrastoriesbackend.service.IReporteService;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -84,6 +85,17 @@ public class ReporteServiceImpl implements IReporteService {
         reporteBasureroRepository.deleteById(reporteId);
     }
 
+    @Override
+    @Transactional
+    public ReporteResponseDTO asignarReporte(UUID reporteId, String usuarioId) {
+        ReporteBasurero reporte = reporteBasureroRepository.findById(reporteId)
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró el reporte con id: " + reporteId));
+        
+        reporte.setUsuarioAsignadoId(usuarioId);
+        ReporteBasurero actualizado = reporteBasureroRepository.save(reporte);
+        return mapToResponseDTO(actualizado);
+    }
+
     /**
      * Construye un Point de JTS a partir de longitud y latitud.
      * IMPORTANTE: JTS/PostGIS esperan el orden (x=longitud, y=latitud), no al revés.
@@ -101,6 +113,7 @@ public class ReporteServiceImpl implements IReporteService {
                 .fechaReporte(reporte.getFechaReporte())
                 .estado(reporte.getEstado())
                 .usuarioId(reporte.getUsuarioId())
+                .usuarioAsignadoId(reporte.getUsuarioAsignadoId())
                 .latitud(reporte.getUbicacion().getY())
                 .longitud(reporte.getUbicacion().getX())
                 .build();

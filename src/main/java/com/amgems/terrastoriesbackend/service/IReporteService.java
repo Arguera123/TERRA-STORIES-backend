@@ -23,4 +23,5 @@ public interface IReporteService {
     List<ReporteResponseDTO> obtenerReportesPorZona(UUID zonaId);
     ReporteResponseDTO actualizarEstadoReporte(UUID reporteId, EstadoReporte nuevoEstado);
     void eliminarReporte(UUID reporteId);
+    ReporteResponseDTO asignarReporte(UUID reporteId, String usuarioId);
 }
