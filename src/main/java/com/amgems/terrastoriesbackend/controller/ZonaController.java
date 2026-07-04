@@ -1,11 +1,13 @@
 package com.amgems.terrastoriesbackend.controller;
 
+import com.amgems.terrastoriesbackend.domain.DTO.ZonaMinimaDTO;
 import com.amgems.terrastoriesbackend.service.IZonaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,5 +23,11 @@ public class ZonaController {
     public ResponseEntity<Map<String, Object>> obtenerZonaGeoJson(@PathVariable UUID id) {
         Map<String, Object> geoJsonFeature = zonaService.obtenerZonaComoGeoJson(id);
         return ResponseEntity.ok(geoJsonFeature);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping
+    public ResponseEntity<List<ZonaMinimaDTO>> listarZonas() {
+        return ResponseEntity.ok(zonaService.listarZonasMinimas());
     }
 }

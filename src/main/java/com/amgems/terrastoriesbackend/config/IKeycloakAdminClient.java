@@ -29,4 +29,7 @@ public interface IKeycloakAdminClient {
             @PathVariable("userId") String userId,
             @PathVariable("clientUniqueId") String clientUniqueId
     );
+
+    @GetMapping("/admin/realms/terra-stories/users/{userId}/role-mappings/realm")
+    List<Map<String, Object>> getUserRealmRoles(@PathVariable("userId") String userId);
 }

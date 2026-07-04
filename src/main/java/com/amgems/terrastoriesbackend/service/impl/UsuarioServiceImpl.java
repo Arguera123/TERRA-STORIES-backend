@@ -9,11 +9,12 @@ import feign.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.slf4j.helpers.Reporter.error;
+
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +46,27 @@ public class UsuarioServiceImpl implements IUsuarioService {
         }
 
         return usuarios.stream()
-                .map(GeneralMappers::mapToUserInfoDTO)
+                .map(userMap -> {
+                    UserInfoDTO dto = GeneralMappers.mapToUserInfoDTO(userMap);
+
+                    if (dto != null && dto.getId() != null) {
+                        try {
+                            List<Map<String, Object>> realmRoles = keycloakAdminClient.getUserRealmRoles(dto.getId());
+
+                            if (realmRoles != null) {
+                                Set<String> roles = realmRoles.stream()
+                                        .map(roleMap -> (String) roleMap.get("name"))
+                                        .filter(roleName -> !roleName.startsWith("default-roles") && !roleName.equals("offline_access") && !roleName.equals("uma_authorization"))
+                                        .collect(Collectors.toSet());
+
+                                dto.setRoles(roles);
+                            }
+                        } catch (Exception e) {
+                            error("Error al obtener roles para el usuario con ID: " + dto.getId(), e);
+                        }
+                    }
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
